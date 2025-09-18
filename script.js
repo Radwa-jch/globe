@@ -2,10 +2,20 @@
 const wwd = new WorldWind.WorldWindow("canvasOne");
 
 // Base layers
-wwd.addLayer(new WorldWind.BMNGOneImageLayer());        // Blue Marble
-wwd.addLayer(new WorldWind.BMNGLandsatLayer());         // Satellite overlay
-wwd.addLayer(new WorldWind.AtmosphereLayer());          // Clouds
-wwd.addLayer(new WorldWind.CompassLayer());             // Compass
+// ✅ Create the globe
+const wwd = new WorldWind.WorldWindow("canvasOne");
+
+// 🌍 Use OpenStreetMap for cities, roads, labels
+const osmLayer = new WorldWind.OpenStreetMapImageLayer();
+wwd.addLayer(osmLayer);
+
+// 🌄 Optionally: Add satellite imagery under OSM (layer stack)
+const satelliteLayer = new WorldWind.BMNGLandsatLayer();
+wwd.addLayer(satelliteLayer);
+
+// 🌫 Atmosphere + controls
+wwd.addLayer(new WorldWind.AtmosphereLayer());
+wwd.addLayer(new WorldWind.CompassLayer());
 wwd.addLayer(new WorldWind.CoordinatesDisplayLayer(wwd));
 wwd.addLayer(new WorldWind.ViewControlsLayer(wwd));
 
@@ -57,3 +67,4 @@ function searchLocation() {
       alert("An error occurred while searching.");
     });
 }
+
