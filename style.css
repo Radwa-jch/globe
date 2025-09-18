@@ -1,0 +1,59 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+/* Star/Galaxy background */
+body {
+  background: url('https://images.unsplash.com/photo-1587474260584-136574528ed1?fit=crop&w=1920&q=80') no-repeat center center fixed;
+  background-size: cover;
+}
+
+header {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: white;
+  text-align: center;
+}
+
+input[type="text"] {
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: none;
+  width: 220px;
+  margin-right: 8px;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0e76a8;
+  color: white;
+  cursor: pointer;
+}
+
+#canvasContainer {
+  height: 100%;
+  width: 100%;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
