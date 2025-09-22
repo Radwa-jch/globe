@@ -1,21 +1,12 @@
-// Create WorldWindow
+
+    // Create WorldWindow linked to our canvas
 const wwd = new WorldWind.WorldWindow("canvasOne");
 
 // Base layers
-// ✅ Create the globe
-const wwd = new WorldWind.WorldWindow("canvasOne");
-
-// 🌍 Use OpenStreetMap for cities, roads, labels
-const osmLayer = new WorldWind.OpenStreetMapImageLayer();
-wwd.addLayer(osmLayer);
-
-// 🌄 Optionally: Add satellite imagery under OSM (layer stack)
-const satelliteLayer = new WorldWind.BMNGLandsatLayer();
-wwd.addLayer(satelliteLayer);
-
-// 🌫 Atmosphere + controls
-wwd.addLayer(new WorldWind.AtmosphereLayer());
-wwd.addLayer(new WorldWind.CompassLayer());
+wwd.addLayer(new WorldWind.BMNGOneImageLayer());        // Blue Marble
+wwd.addLayer(new WorldWind.BMNGLandsatLayer());         // Satellite overlay
+wwd.addLayer(new WorldWind.AtmosphereLayer());          // Clouds
+wwd.addLayer(new WorldWind.CompassLayer());             // Compass
 wwd.addLayer(new WorldWind.CoordinatesDisplayLayer(wwd));
 wwd.addLayer(new WorldWind.ViewControlsLayer(wwd));
 
@@ -40,7 +31,7 @@ function addMarker(lat, lon) {
   placemarkLayer.addRenderable(placemark);
 }
 
-// Replace with your OpenCage API key
+// Replace with your own OpenCage API key
 const apiKey = "953b73b1da854a14aa917ece77d7bc97";
 
 // Function to search city and fly to it
@@ -67,4 +58,3 @@ function searchLocation() {
       alert("An error occurred while searching.");
     });
 }
-
