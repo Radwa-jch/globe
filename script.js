@@ -1,12 +1,17 @@
 
-    // Create WorldWindow linked to our canvas
+  // Create WorldWindow linked to our canvas
 const wwd = new WorldWind.WorldWindow("canvasOne");
 
-// Base layers
-wwd.addLayer(new WorldWind.BMNGOneImageLayer());        // Blue Marble
-wwd.addLayer(new WorldWind.BMNGLandsatLayer());         // Satellite overlay
-wwd.addLayer(new WorldWind.AtmosphereLayer());          // Clouds
-wwd.addLayer(new WorldWind.CompassLayer());             // Compass
+// 🌌 Background space layers (galaxy effect)
+wwd.addLayer(new WorldWind.StarFieldLayer());
+wwd.addLayer(new WorldWind.SkyGradientLayer());
+
+// 🌍 Base Earth layers (clear & sharp)
+wwd.addLayer(new WorldWind.BMNGOneImageLayer());  // High-res Blue Marble
+wwd.addLayer(new WorldWind.AtmosphereLayer());   // Clouds & atmosphere
+
+// 🧭 UI helpers
+wwd.addLayer(new WorldWind.CompassLayer());             
 wwd.addLayer(new WorldWind.CoordinatesDisplayLayer(wwd));
 wwd.addLayer(new WorldWind.ViewControlsLayer(wwd));
 
