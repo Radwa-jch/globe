@@ -15,7 +15,7 @@ html, body {
 
 /* Background (still image, optional) */
 body {
-  background: url('images/milky-way-glows-mountain-peak-dusk-generated-by-ai.jpg') no-repeat center center fixed;
+  background: url('milky-way-glows-mountain-peak-dusk-generated-by-ai.jpg') no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -61,5 +61,6 @@ button {
   height: 100%;
   display: block;
 }
+
 
 
