@@ -2,9 +2,17 @@
   // Create WorldWindow linked to our canvas
 const wwd = new WorldWind.WorldWindow("canvasOne");
 
-// 🌌 Background space layers (galaxy effect)
+const canvas = document.getElementById("canvasOne");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// 🌌 Background space layer (black starfield only)
 wwd.addLayer(new WorldWind.StarFieldLayer());
-wwd.addLayer(new WorldWind.SkyGradientLayer());
 
 // 🌍 Base Earth layers (clear & sharp)
 wwd.addLayer(new WorldWind.BMNGOneImageLayer());  // High-res Blue Marble
@@ -63,3 +71,4 @@ function searchLocation() {
       alert("An error occurred while searching.");
     });
 }
+
