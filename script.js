@@ -12,7 +12,9 @@ window.addEventListener("resize", () => {
 });
 
 // 🌌 Background space layer (black starfield only)
-wwd.addLayer(new WorldWind.StarFieldLayer());
+wwd.addLayer(new WorldWind.StarFieldLayer());   // stars
+wwd.addLayer(new WorldWind.BMNGOneImageLayer()); // Earth imagery
+wwd.addLayer(new WorldWind.AtmosphereLayer());  // clouds/atmosphere
 
 // 🌍 Base Earth layers (clear & sharp)
 wwd.addLayer(new WorldWind.BMNGOneImageLayer());  // High-res Blue Marble
@@ -71,4 +73,5 @@ function searchLocation() {
       alert("An error occurred while searching.");
     });
 }
+
 
