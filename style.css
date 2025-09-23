@@ -1,3 +1,4 @@
+
 /* Reset */
 * {
   margin: 0;
@@ -10,12 +11,6 @@ html, body {
   width: 100%;
   font-family: 'Segoe UI', sans-serif;
   overflow: hidden;
-}
-
-/* Star/Galaxy background */
-body {
-  background: url('https://images.unsplash.com/photo-1587474260584-136574528ed1?fit=crop&w=1920&q=80') no-repeat center center fixed;
-  background-size: cover;
 }
 
 /* Header */
@@ -60,4 +55,3 @@ button {
   height: 100%;
   display: block;
 }
-
