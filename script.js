@@ -1,11 +1,14 @@
-// Create WorldWindow
+
+// Create WorldWindow linked to our canvas
 const wwd = new WorldWind.WorldWindow("canvasOne");
 
-// Base layers
-wwd.addLayer(new WorldWind.BMNGOneImageLayer());        // Blue Marble
-wwd.addLayer(new WorldWind.BMNGLandsatLayer());         // Satellite overlay
-wwd.addLayer(new WorldWind.AtmosphereLayer());          // Clouds
-wwd.addLayer(new WorldWind.CompassLayer());             // Compass
+// 🌍 Base Earth layers
+wwd.addLayer(new WorldWind.BMNGOneImageLayer());   // Blue Marble
+wwd.addLayer(new WorldWind.BMNGLandsatLayer());    // Satellite overlay
+wwd.addLayer(new WorldWind.AtmosphereLayer());     // Clouds & atmosphere
+
+// 🧭 UI helpers
+wwd.addLayer(new WorldWind.CompassLayer());
 wwd.addLayer(new WorldWind.CoordinatesDisplayLayer(wwd));
 wwd.addLayer(new WorldWind.ViewControlsLayer(wwd));
 
@@ -30,7 +33,7 @@ function addMarker(lat, lon) {
   placemarkLayer.addRenderable(placemark);
 }
 
-// Replace with your OpenCage API key
+// Replace with your own OpenCage API key
 const apiKey = "953b73b1da854a14aa917ece77d7bc97";
 
 // Function to search city and fly to it

@@ -1,3 +1,4 @@
+
 /* Reset */
 * {
   margin: 0;
@@ -7,16 +8,18 @@
 
 html, body {
   height: 100%;
+  width: 100%;
   font-family: 'Segoe UI', sans-serif;
   overflow: hidden;
 }
 
-/* Star/Galaxy background */
+/* Background (still image, optional) */
 body {
-  background: url('https://images.unsplash.com/photo-1587474260584-136574528ed1?fit=crop&w=1920&q=80') no-repeat center center fixed;
+  background: url('milky-way-glows-mountain-peak-dusk-generated-by-ai.jpg') no-repeat center center fixed;
   background-size: cover;
 }
 
+/* Header */
 header {
   position: absolute;
   top: 10px;
@@ -47,13 +50,17 @@ button {
   cursor: pointer;
 }
 
+/* Canvas container and canvas */
 #canvasContainer {
-  height: 100%;
-  width: 100%;
+  width: 100vw;
+  height: 100vh;
 }
 
-canvas {
-  display: block;
+#canvasOne {
   width: 100%;
   height: 100%;
+  display: block;
 }
+
+
+
