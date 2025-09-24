@@ -1,44 +1,50 @@
+# Install required packages
 !pip install requests geopy pandas
-
 # Import libraries
 import requests
 import datetime
 from geopy.geocoders import Nominatim
+import calendar
 
 # -----------------------
 # User inputs
 # -----------------------
-city = input("Enter city name: ")
-activity = input("Enter your activity: ")
-month_input = input("Enter month (e.g., March): ")
-week_input = input("Enter week number (1, 2, 3, 4): ")
+city = input("Enter city name: ").strip()
+activity = input("Enter your activity: ").strip()
 
-# Map month name to month number
+# Handle month input safely
+month_input = input("Enter month (e.g., March): ").strip().lower()
 month_dict = {
     "january": 1, "february": 2, "march": 3, "april": 4,
     "may": 5, "june": 6, "july": 7, "august": 8,
     "september": 9, "october": 10, "november": 11, "december": 12
 }
-month = month_dict.get(month_input.lower())
+month = month_dict.get(month_input)
 if month is None:
     print("Invalid month name.")
     exit()
 
+# Handle week input safely
+week_input = input("Enter week number (1, 2, 3, 4): ").strip()
+if not week_input.isdigit() or not (1 <= int(week_input) <= 4):
+    print("Invalid week selection.")
+    exit()
+week = int(week_input)
+
 # Default year
 year = datetime.datetime.now().year
 
-# Determine start and end dates of the selected week
-week = int(week_input)
-start_day = 1 + (week - 1) * 7
-end_day = start_day + 6
-try:
-    start_date = datetime.date(year, month, start_day)
-    end_date = datetime.date(year, month, min(end_day, 31))  # max 31
-except:
-    print("Invalid week selection for this month.")
-    exit()
+# Calculate number of days in month
+_, last_day_of_month = calendar.monthrange(year, month)
 
-print(f"Checking weather for {city}, {month_input} week {week} ({start_date} to {end_date})")
+# Calculate start and end days of the week
+start_day = 1 + (week - 1) * 7
+end_day = min(start_day + 6, last_day_of_month)
+
+start_date = datetime.date(year, month, start_day)
+end_date = datetime.date(year, month, end_day)
+
+print(f"Checking weather for {city}, {month_input.title()} week {week} ({start_date} to {end_date})")
 
 # -----------------------
 # Get city coordinates
