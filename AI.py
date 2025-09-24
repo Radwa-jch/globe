@@ -1,10 +1,13 @@
 !pip install requests geopy pandas
+
 # Import libraries
 import requests
 import datetime
 from geopy.geocoders import Nominatim
 
+# -----------------------
 # User inputs
+# -----------------------
 city = input("Enter city name: ")
 activity = input("Enter your activity: ")
 month_input = input("Enter month (e.g., March): ")
