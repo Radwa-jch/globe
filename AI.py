@@ -7,10 +7,39 @@ from geopy.geocoders import Nominatim
 # User inputs
 city = input("Enter city name: ")
 activity = input("Enter your activity: ")
-event_date_str = input("Enter planned event date (YYYY-MM-DD): ")
-event_date = datetime.datetime.strptime(event_date_str, "%Y-%m-%d").date()
+month_input = input("Enter month (e.g., March): ")
+week_input = input("Enter week number (1, 2, 3, 4): ")
 
+# Map month name to month number
+month_dict = {
+    "january": 1, "february": 2, "march": 3, "april": 4,
+    "may": 5, "june": 6, "july": 7, "august": 8,
+    "september": 9, "october": 10, "november": 11, "december": 12
+}
+month = month_dict.get(month_input.lower())
+if month is None:
+    print("Invalid month name.")
+    exit()
+
+# Default year
+year = datetime.datetime.now().year
+
+# Determine start and end dates of the selected week
+week = int(week_input)
+start_day = 1 + (week - 1) * 7
+end_day = start_day + 6
+try:
+    start_date = datetime.date(year, month, start_day)
+    end_date = datetime.date(year, month, min(end_day, 31))  # max 31
+except:
+    print("Invalid week selection for this month.")
+    exit()
+
+print(f"Checking weather for {city}, {month_input} week {week} ({start_date} to {end_date})")
+
+# -----------------------
 # Get city coordinates
+# -----------------------
 geolocator = Nominatim(user_agent="weather_ai_app")
 location = geolocator.geocode(city)
 if location is None:
@@ -19,10 +48,11 @@ if location is None:
 
 latitude = location.latitude
 longitude = location.longitude
-
 print(f"City: {city} -> Latitude: {latitude}, Longitude: {longitude}")
 
-# Function to fetch weather safely
+# -----------------------
+# Function to fetch weather safely for a date
+# -----------------------
 def fetch_weather(date):
     date_str = date.strftime("%Y%m%d")
     url = f"https://power.larc.nasa.gov/api/temporal/hourly/point?parameters=T2M,PRECTOTCORR,WS2M&community=RE&longitude={longitude}&latitude={latitude}&start={date_str}&end={date_str}&format=JSON"
@@ -34,8 +64,9 @@ def fetch_weather(date):
     winds = list(data.get("properties", {}).get("parameter", {}).get("WS2M", {}).values())
     return times, temperatures, precipitations, winds
 
-
+# -----------------------
 # Function to check if weather is suitable
+# -----------------------
 def check_weather(temp, rain, wind, activity):
     activity = activity.lower()
     if activity in ["football", "soccer", "running", "cycling"]:
@@ -45,50 +76,36 @@ def check_weather(temp, rain, wind, activity):
     else:
         return "suitable" if 10 <= temp <= 35 and rain < 3 else "not suitable"
 
-# Check main event date safely
-times, temperatures, precipitations, winds = fetch_weather(event_date)
+# -----------------------
+# Loop over each day in the week and find best day
+# -----------------------
+best_day = None
+best_decision = "not suitable"
+current_day = start_date
+while current_day <= end_date:
+    times, temps, rain, wind = fetch_weather(current_day)
+    if times and temps and rain and wind:
+        decision = check_weather(temps[0], rain[0], wind[0], activity)
+        if decision == "suitable":
+            best_day = current_day
+            best_decision = decision
+            best_temp = temps[0]
+            best_rain = rain[0]
+            best_wind = wind[0]
+            break  # pick first suitable day
+    current_day += datetime.timedelta(days=1)
 
-if not (times and temperatures and precipitations and winds):
-    print("No forecast data available for this date/city.")
-    print("Try a different date or city, or check alternative days below.\n")
-    times = temperatures = precipitations = winds = None
+# -----------------------
+# Output results
+# -----------------------
+if best_day:
+    print("===== Suggested Best Day for Activity =====")
+    print(f"Date: {best_day}")
+    print(f"Temperature: {best_temp} °C")
+    print(f"Precipitation: {best_rain} mm")
+    print(f"Wind Speed: {best_wind} m/s")
+    print(f"The weather is suitable for {activity}!")
 else:
-    forecast_time = times[0]
-    temperature = temperatures[0]
-    precipitation = precipitations[0]
-    wind = winds[0]
-    decision = check_weather(temperature, precipitation, wind, activity)
-
-    print("===== Weather Activity Summary =====")
-    print(f"Location: {city}")
-    print(f"Event Date: {event_date}")
-    print(f"Temperature: {temperature} °C")
-    print(f"Precipitation: {precipitation} mm")
-    print(f"Wind Speed: {wind} m/s")
-    print("-----------------------------------")
-
-    if decision == "suitable":
-        print(f"The weather is suitable for {activity} on the planned date.")
-    else:
-        print(f"The weather is NOT suitable for {activity} on the planned date.")
-
-# Suggest alternative days safely
-alternative_found = False
-for delta in range(1, 8):
-    alt_date = event_date + datetime.timedelta(days=delta)
-    times_alt, temps_alt, rain_alt, wind_alt = fetch_weather(alt_date)
-    if times_alt and temps_alt and rain_alt and wind_alt:
-        decision_alt = check_weather(temps_alt[0], rain_alt[0], wind_alt[0], activity)
-        if decision_alt == "suitable":
-            alternative_found = True
-            print("\nSuggested Alternative Day:")
-            print(f"Date: {alt_date}")
-            print(f"Temperature: {temps_alt[0]} °C")
-            print(f"Precipitation: {rain_alt[0]} mm")
-            print(f"Wind Speed: {wind_alt[0]} m/s")
-            break
-
-if not alternative_found:
-    print("\nNo suitable day found within 7 days. Consider an indoor activity.")
-    alternative_activities = ["reading", "gym", "movie", "shopping"]
-    print(f"Suggested indoor activity: {alternative_activities[0]}")
+    print("No suitable day found in this week. Consider an indoor activity.")
+    indoor_activities = ["reading", "gym", "movie", "shopping"]
+    print(f"Suggested indoor activity: {indoor_activities[0]}")
